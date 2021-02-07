@@ -1,0 +1,29 @@
+<% layout("layouts/boilerplate") %>
+<div class="row">
+  <div class="col-6 offset-3">
+    <div class="card mb-3">
+      <img src="<%=thermal.image %>" class="card-img-top" alt="..." />
+      <div class="card-body">
+        <h5 class="card-title"><%= thermal.title %></h5>
+        <p class="card-text"><%=thermal.description %></p>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item text-muted"><%=thermal.location %></li>
+        <li class="list-group-item">$<%=thermal.price %>/night</li>
+      </ul>
+      <div class="card-body">
+        <a class="card-link btn btn-info" href="/thermals/<%=thermal._id%>/edit"
+          >Edit</a
+        >
+        <form
+          class="d-inline"
+          action="/thermals/<%=thermal._id%>?_method=DELETE"
+          method="POST"
+        >
+          <button class="btn btn-danger">Delete</button>
+        </form>
+      </div>
+      <div class="card-footer text-muted">2 Days Ago</div>
+    </div>
+  </div>
+</div>
