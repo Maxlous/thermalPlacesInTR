@@ -1,17 +1,19 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const ejsMate = require("ejs-mate");
-const { thermalSchema } = require("./schemas.js");
+const { thermalSchema, reviewSchema } = require("./schemas.js");
 const path = require('path');
 const catchAsync = require("./utils/catchAsync")
 const methodOverride = require("method-override");
 const Thermal = require("./models/thermals");
 const ExpressError = require("./utils/ExpressError");
+const Review = require("./models/review");
 
 mongoose.connect('mongodb://localhost:27017/thermalTr', {
     useNewUrlParser: true,
     useCreateIndex: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify: false
 });
 
 const db = mongoose.connection;
@@ -39,6 +41,16 @@ const validateThermal = (req, res, next) => {
     }
 };
 
+const validateReview = (req, res, next) => {
+    const { error } = reviewSchema.validate(req.body);
+    if(error) {
+        const msg = error.details.map(el => el.message).join(',')
+        throw new ExpressError(msg, 400)
+    } else {
+        next()
+    }
+}
+
 app.get('/', (req, res) => {
     res.render('home')
 });
@@ -61,7 +73,7 @@ app.post('/thermals', validateThermal, catchAsync(async (req, res, next) => {
 }));
 
 app.get('/thermals/:id', catchAsync(async (req, res) => {
-    const thermal= await Thermal.findById(req.params.id);
+    const thermal= await Thermal.findById(req.params.id).populate("reviews");
     res.render("thermals/show", { thermal});
 }));
 
@@ -80,6 +92,22 @@ app.delete("/thermals/:id", catchAsync(async (req, res) => {
     const {id} =req.params;
     await Thermal.findByIdAndDelete(id);
     res.redirect("/thermals");
+}))
+
+app.post("/thermals/:id/reviews", validateReview, catchAsync(async(req, res) => {
+    const thermal = await Thermal.findById(req.params.id);
+    const review = new Review(req.body.review);
+    thermal.reviews.push(review);
+    await review.save();
+    await thermal.save();
+    res.redirect(`/thermals/${thermal._id}`);
+}))
+
+app.delete("/thermals/:id/reviews/:reviewId", catchAsync(async(req, res) => {
+    const { id, reviewId } = req.params;
+    await Thermal.findByIdAndUpdate(id, {$pull: {reviews: reviewId}});
+    await Review.findByIdAndDelete(reviewId);
+res.redirect(`/thermals/${id}`);
 }))
 
 app.all("*", (req, res, next) => {
