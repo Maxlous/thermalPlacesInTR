@@ -1,14 +1,13 @@
 const express = require('express');
+const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require("ejs-mate");
-const { thermalSchema, reviewSchema } = require("./schemas.js");
-const path = require('path');
-const catchAsync = require("./utils/catchAsync")
-const methodOverride = require("method-override");
-const Thermal = require("./models/thermals");
 const ExpressError = require("./utils/ExpressError");
-const Review = require("./models/review");
-
+const methodOverride = require("method-override");
+const thermals = require("./routes/thermal");
+const reviews = require("./routes/reviews");
+const session = require("express-session");
+const flash = require("connect-flash");
 mongoose.connect('mongodb://localhost:27017/thermalTr', {
     useNewUrlParser: true,
     useCreateIndex: true,
@@ -27,88 +26,30 @@ app.engine("ejs", ejsMate);
 app.set('view engine', 'ejs'); 
 app.set('views', path.join(__dirname, 'views'));
 
-
 app.use(express.urlencoded({extended : true}));
 app.use(methodOverride("_method"));
-
-const validateThermal = (req, res, next) => {
-    const { error } = thermalSchema.validate(req.body);
-    if(error) {
-        const msg = error.details.map(el => el.message).join(',')
-        throw new ExpressError(msg, 400)
-    } else {
-        next()
-    }
-};
-
-const validateReview = (req, res, next) => {
-    const { error } = reviewSchema.validate(req.body);
-    if(error) {
-        const msg = error.details.map(el => el.message).join(',')
-        throw new ExpressError(msg, 400)
-    } else {
-        next()
+app.use(express.static(path.join(__dirname, "public" )));
+const sessionConfig = {
+    secret: "thisneedstobemodified",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        httpOnly: true,
+        expires: Date.now() + 1000 * 60 * 60* 24* 7,
+        maxAge: 1000 * 60 * 60* 24* 7
     }
 }
+app.use(session(sessionConfig))
+app.use(flash());
 
-app.get('/', (req, res) => {
-    res.render('home')
-});
+app.use((req, res, next) => {
+    res.locals.success = req.flash("success");
+    res.locals.error = req.flash("error")
+    next();
+})
 
-app.get('/thermals', catchAsync(async (req, res) => {
-    const thermals = await Thermal.find({});
-    res.render("thermals/index", {thermals})
-}));
-
-app.get('/thermals/new', (req, res) => {
-    res.render("thermals/new");
-});
-
-app.post('/thermals', validateThermal, catchAsync(async (req, res, next) => {
-    //if(!req.body.thermal) throw new ExpressError("Invalid Thermal Data", 404);
-    
-    const thermal = new Thermal(req.body.thermal);
-    await thermal.save();
-    res.redirect(`/thermals/${thermal._id}`)
-}));
-
-app.get('/thermals/:id', catchAsync(async (req, res) => {
-    const thermal= await Thermal.findById(req.params.id).populate("reviews");
-    res.render("thermals/show", { thermal});
-}));
-
-app.get("/thermals/:id/edit", catchAsync(async (req, res) => {
-    const thermal = await Thermal.findById(req.params.id);
-    res.render("thermals/edit", {thermal});
-}));
-
-app.put("/thermals/:id", validateThermal, catchAsync(async (req, res) => {
-    const { id } = req.params;
-    const thermal = await Thermal.findByIdAndUpdate(id, {...req.body.thermal});
-    res.redirect(`/thermals/${thermal._id}`)
-}));
-
-app.delete("/thermals/:id", catchAsync(async (req, res) => {
-    const {id} =req.params;
-    await Thermal.findByIdAndDelete(id);
-    res.redirect("/thermals");
-}))
-
-app.post("/thermals/:id/reviews", validateReview, catchAsync(async(req, res) => {
-    const thermal = await Thermal.findById(req.params.id);
-    const review = new Review(req.body.review);
-    thermal.reviews.push(review);
-    await review.save();
-    await thermal.save();
-    res.redirect(`/thermals/${thermal._id}`);
-}))
-
-app.delete("/thermals/:id/reviews/:reviewId", catchAsync(async(req, res) => {
-    const { id, reviewId } = req.params;
-    await Thermal.findByIdAndUpdate(id, {$pull: {reviews: reviewId}});
-    await Review.findByIdAndDelete(reviewId);
-res.redirect(`/thermals/${id}`);
-}))
+app.use("/thermals", thermals)
+app.use("/thermals/:id/reviews", reviews)
 
 app.all("*", (req, res, next) => {
     next(new ExpressError("Page not found", 404))
