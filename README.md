@@ -1,7 +1,7 @@
 # thermalPlacesInTr
 ***
 ## What is this project?
-- Eventually, it will be a web site that contains information about **Thermal **Springs in Turkey.
+- Eventually, it will be a web site that contains information about ** Thermal **Springs in Turkey.
 ***
 ## Capabilities
 - Adding new Thermal Place (only by admin)
