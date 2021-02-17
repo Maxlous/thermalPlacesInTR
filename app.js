@@ -4,10 +4,14 @@ const mongoose = require('mongoose');
 const ejsMate = require("ejs-mate");
 const ExpressError = require("./utils/ExpressError");
 const methodOverride = require("method-override");
-const thermals = require("./routes/thermal");
-const reviews = require("./routes/reviews");
+const thermalRoutes = require("./routes/thermal");
+const reviewRoutes = require("./routes/reviews");
 const session = require("express-session");
 const flash = require("connect-flash");
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
+const User = require("./models/user");
+const userRoutes = require("./routes/users");
 mongoose.connect('mongodb://localhost:27017/thermalTr', {
     useNewUrlParser: true,
     useCreateIndex: true,
@@ -42,14 +46,22 @@ const sessionConfig = {
 app.use(session(sessionConfig))
 app.use(flash());
 
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()))
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 app.use((req, res, next) => {
+    res.locals.currentUser = req.user;
     res.locals.success = req.flash("success");
     res.locals.error = req.flash("error")
     next();
 })
 
-app.use("/thermals", thermals)
-app.use("/thermals/:id/reviews", reviews)
+app.use("/", userRoutes);
+app.use("/thermals", thermalRoutes);
+app.use("/thermals/:id/reviews", reviewRoutes);
 
 app.all("*", (req, res, next) => {
     next(new ExpressError("Page not found", 404))
