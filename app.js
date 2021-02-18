@@ -12,6 +12,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user");
 const userRoutes = require("./routes/users");
+
 mongoose.connect('mongodb://localhost:27017/thermalTr', {
     useNewUrlParser: true,
     useCreateIndex: true,

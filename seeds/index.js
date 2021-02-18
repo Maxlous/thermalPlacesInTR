@@ -20,6 +20,7 @@ const seedDB = async () => {
         const random1000 = Math.floor(Math.random() *1000);
         const price = Math.floor(Math.random() *30 +5);
         const place = new Thermal({
+            author: "602e857c41309c678cfa1dbf",
             location : `${cities[random1000].city}, ${cities[random1000].state} `,
             title : `${sample(descriptors)} ${sample(places)}`,
             image: "https://source.unsplash.com/collection/388793",

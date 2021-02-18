@@ -35,7 +35,7 @@ router.post("/login", passport.authenticate("local", {failureFlash: true, failur
     res.redirect(redirectUrl)
 })
 
-router.get("/logout", (req,res) => {
+router.get("/logout", (req, res) => {
     req.logout();
     req.flash("success", "Logged You Out :)")
     res.redirect("/thermals");
