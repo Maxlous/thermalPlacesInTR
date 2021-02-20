@@ -11,8 +11,10 @@ const renderNewForm = (req, res) => {
 const createThermal = async (req, res, next) => {
     //if(!req.body.thermal) throw new ExpressError("Invalid Thermal Data", 404);
     const thermal = new Thermal(req.body.thermal);
+    thermal.images = req.files.map(f => ({url: f.path, filename: f.filename}));
     thermal.author = req.user._id;
     await thermal.save();
+    console.log(thermal);
     req.flash("success", "Making thermal: Success!");
     res.redirect(`/thermals/${thermal._id}`)
 }

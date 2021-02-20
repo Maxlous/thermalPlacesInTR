@@ -4,10 +4,12 @@ const catchAsync = require("../utils/catchAsync");
 const Thermal = require("../models/thermals");
 const {isLoggedIn, isAuthor, validateThermal } = require("../middleware");
 const thermals = require("../controllers/thermals");
-
+const multer = require("multer");
+const { storage } = require("../cloudinary");
+const upload = multer({storage});
 router.route("/")
     .get(catchAsync(thermals.index))
-    .post(isLoggedIn, validateThermal, catchAsync(thermals.createThermal));
+    .post(isLoggedIn, upload.array("image"), validateThermal, catchAsync(thermals.createThermal))
     
 router.get('/new', isLoggedIn, thermals.renderNewForm);
 
