@@ -1,5 +1,5 @@
 const Thermal = require("../models/thermals");
-
+const {cloudinary} = require("../cloudinary")
 
 const index = async (req, res) => {
     const thermals = await Thermal.find({});
@@ -45,6 +45,15 @@ const renderEditForm = async (req, res) => {
 const updateThermal = async (req, res) => {
     const { id } = req.params;
     const thermal = await Thermal.findByIdAndUpdate(id, {...req.body.thermal});
+    const imgs = req.files.map(f => ({url: f.path, filename: f.filename}));
+    thermal.images.push(...imgs);
+    await thermal.save();
+    if (req.body.deleteImages){
+        for(let filename of req.body.deleteImages){
+            await cloudinary.uploader.destroy(filename);
+        }
+        await thermal.updateOne({$pull: {images: {filename: {$in: req.body.deleteImages}}}})
+    }
     req.flash("success", "Succesfully Edited")
     res.redirect(`/thermals/${thermal._id}`)
 }

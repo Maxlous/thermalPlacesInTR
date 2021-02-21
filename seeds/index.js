@@ -23,8 +23,16 @@ const seedDB = async () => {
             author: "602e857c41309c678cfa1dbf",
             location : `${cities[random1000].city}, ${cities[random1000].state} `,
             title : `${sample(descriptors)} ${sample(places)}`,
-            image: "https://source.unsplash.com/collection/388793",
-            description: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Alias perferendis magni quam deleniti odio delectus adipisci ut aut nesciunt vel. Rerum esse reprehenderit ratione reiciendis voluptatem placeat delectus quod in?",
+            images: [
+                {
+                  url: 'https://res.cloudinary.com/maxlous/image/upload/v1613840667/ThermalPlaces/mthn6vzun1tq84jez9ug.jpg',
+                  filename: 'ThermalPlaces/mthn6vzun1tq84jez9ug'
+                },
+                {
+                  url: 'https://res.cloudinary.com/maxlous/image/upload/v1613840669/ThermalPlaces/qgrztlkwwdn8ko92pkt0.jpg',
+                  filename: 'ThermalPlaces/qgrztlkwwdn8ko92pkt0'
+                }
+              ],            description: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Alias perferendis magni quam deleniti odio delectus adipisci ut aut nesciunt vel. Rerum esse reprehenderit ratione reiciendis voluptatem placeat delectus quod in?",
             price
         })
         await place.save();

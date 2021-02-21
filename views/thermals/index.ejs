@@ -1,26 +1,31 @@
 <% layout("layouts/boilerplate") %>
-<h1>All thermals</h1>
-<div>
-  <a href="/thermals/new">Add Thermal</a>
-</div>
-<% for (let thermal of thermals) { %>
-<div class="card" mb-3>
-  <div class="row">
-    <div class="col-md-4">
-      <img class="img-fluid" alt="" src=" <%= thermal.image %>" />
-    </div>
-    <div class="col-md-8">
-      <div class="card-body">
-        <h5 class="card-title"><%= thermal.title %></h5>
-        <p class="card-text"><%=thermal.description %></p>
-        <p class="card-text">
-          <small class="text-muted"> <%=thermal.location %> </small>
-        </p>
-        <a class="btn btn-primary" href="/thermals/<%=thermal._id  %> "
-          >View <%=thermal.title %>
-        </a>
+  <h1>All thermals</h1>
+  <div>
+    <a href="/thermals/new">Add Thermal</a>
+  </div>
+  <% for (let thermal of thermals) { %>
+    <div class="card" mb-3>
+      <div class="row">
+        <div class="col-md-4">
+          <img class="img-fluid" alt="" src="<%=thermal.images[0].url%>" />
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h5 class="card-title">
+              <%= thermal.title %>
+            </h5>
+            <p class="card-text">
+              <%=thermal.description %>
+            </p>
+            <p class="card-text">
+              <small class="text-muted">
+                <%=thermal.location %>
+              </small>
+            </p>
+            <a class="btn btn-primary" href="/thermals/<%=thermal._id  %> ">View <%=thermal.title %>
+            </a>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
-<% } %>
+    <% } %>

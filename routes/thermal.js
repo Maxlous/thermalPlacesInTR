@@ -15,7 +15,7 @@ router.get('/new', isLoggedIn, thermals.renderNewForm);
 
 router.route("/:id")
     .get(catchAsync(thermals.showThermal))
-    .put(isLoggedIn, isAuthor, validateThermal, catchAsync(thermals.updateThermal))
+    .put(isLoggedIn, isAuthor, upload.array("image"), validateThermal, catchAsync(thermals.updateThermal))
     .delete(isLoggedIn, isAuthor, catchAsync(thermals.deleteThermal))
     
 router.get("/:id/edit", isLoggedIn, isAuthor, catchAsync(thermals.renderEditForm));
