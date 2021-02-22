@@ -16,7 +16,7 @@ const deleteReview = async(req, res) => {
     const { id, reviewId } = req.params;
     await Thermal.findByIdAndUpdate(id, {$pull: {reviews: reviewId}});
     await Review.findByIdAndDelete(reviewId);
-    req.flash("success", "Successfuly Deleted the Review");
+    req.flash("success", "Review has been deleted");
     res.redirect(`/thermals/${id}`);
 }
 module.exports = {createReview, deleteReview}

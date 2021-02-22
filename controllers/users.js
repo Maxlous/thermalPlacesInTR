@@ -37,4 +37,10 @@ const logout = (req, res) => {
     res.redirect("/thermals");
 }
 
-module.exports = {renderRegister, register, renderLogin, login, logout}
+module.exports = {
+    renderRegister, 
+    register, 
+    renderLogin, 
+    login, 
+    logout
+}

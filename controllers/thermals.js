@@ -1,5 +1,8 @@
 const Thermal = require("../models/thermals");
 const {cloudinary} = require("../cloudinary")
+const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
+const mapBoxToken = process.env.MAPBOX_TOKEN;
+const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
 
 const index = async (req, res) => {
     const thermals = await Thermal.find({});
@@ -9,12 +12,15 @@ const renderNewForm = (req, res) => {
     res.render("thermals/new");
 }
 const createThermal = async (req, res, next) => {
-    //if(!req.body.thermal) throw new ExpressError("Invalid Thermal Data", 404);
+    const geoData = await geocoder.forwardGeocode({
+        query: req.body.thermal.location,
+        limit: 1,
+    }).send()
     const thermal = new Thermal(req.body.thermal);
+    thermal.geometry = geoData.body.features[0].geometry;
     thermal.images = req.files.map(f => ({url: f.path, filename: f.filename}));
     thermal.author = req.user._id;
     await thermal.save();
-    console.log(thermal);
     req.flash("success", "Making thermal: Success!");
     res.redirect(`/thermals/${thermal._id}`)
 }
@@ -65,4 +71,12 @@ const deleteThermal = async (req, res) => {
     res.redirect("/thermals");
 }
 
-module.exports = {index, renderNewForm, createThermal, showThermal, renderEditForm, updateThermal, deleteThermal }
+module.exports = {
+    index, 
+    renderNewForm, 
+    createThermal, 
+    showThermal, 
+    renderEditForm, 
+    updateThermal, 
+    deleteThermal
+    }
