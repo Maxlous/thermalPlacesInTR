@@ -11,7 +11,9 @@ const ImageSchema = new Schema(
 
 ImageSchema.virtual("thumbnail").get(function(){
     return this.url.replace("upload", "/upload/w_300")
-})
+});
+
+const opts = { toJSON: { virtuals: true} };
 
 const thermalSchema = new Schema({
     title: String,
@@ -40,6 +42,12 @@ const thermalSchema = new Schema({
             ref: "Review"
         }
     ]
+}, opts);
+
+thermalSchema.virtual('properties.popUpMarkup').get(function () {
+    return `
+    <strong><a href="/thermals/${this._id}">${this.title}</a><strong>
+    <p>${this.description.substring(0, 20)}...</p>`
 });
 
 thermalSchema.post("findOneAndDelete", async function (doc){

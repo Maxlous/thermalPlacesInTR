@@ -110,6 +110,6 @@
 
   <script>
     const mapToken = '<%-process.env.MAPBOX_TOKEN%>';
-    const thermal = '<%- JSON.stringify(thermal) %>'
+    const thermal = <%- JSON.stringify(thermal) %>
   </script>
   <script src="/javascripts/showPageMap.js"></script>
