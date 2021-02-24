@@ -1,7 +1,7 @@
 <% layout("layouts/boilerplate") %>
   <div class="row">
     <h1 class="text-center">Edit Thermal</h1>
-    <div class="col-6 offset-3">
+    <div class="col-md-6 offset-md-3">
       <form action="/thermals/<%=thermal.id%>?_method=PUT" method="POST" novalidate class="validated-form"
         enctype="multipart/form-data">
         <div class="mb-3">
@@ -47,8 +47,10 @@
         </div>
         <div class="mb-3">
           <button class="btn btn-info">Save Thermal</button>
+          <button class="btn btn-warning"><a style="text-decoration: none; color:black;"
+              href="/thermals/<%= thermal._id%>">Cancel</a></button>
         </div>
       </form>
-      <a href="/thermals/<%= thermal._id%>">Back to Thermal</a>
+
     </div>
   </div>

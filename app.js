@@ -68,6 +68,10 @@ app.use("/", userRoutes);
 app.use("/thermals", thermalRoutes);
 app.use("/thermals/:id/reviews", reviewRoutes);
 
+app.get("/", (req,res) => {
+    res.render("home.ejs")
+})
+
 app.all("*", (req, res, next) => {
     next(new ExpressError("Page not found", 404))
 })

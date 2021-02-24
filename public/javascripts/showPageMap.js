@@ -6,6 +6,9 @@ mapboxgl.accessToken = mapToken;
       zoom: 6 // starting zoom
     });
 
+map.addControl(new mapboxgl.NavigationControl(), "bottom-right");
+
+
 new mapboxgl.Marker()
     .setLngLat(thermal.geometry.coordinates)
     .setPopup(
