@@ -5,10 +5,12 @@
                 <h4 class="alert-heading">
                     <%=err.message%>
                 </h4>
-                <p>
-                    <!-- bu er.stack i silebilirsin developmentta iyi ama kullanıcı görmesin -->
-                    <%= err.stack %>
-                </p>
+                <% if(process.env.NODE_ENV !=="production" ){ %>
+                    <p>
+                        <!-- bu er.stack i silebilirsin developmentta iyi ama kullanıcı görmesin -->
+                        <%= err.stack %>
+                    </p>
+                    <% } %>
             </div>
         </div>
     </div>
