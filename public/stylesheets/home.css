@@ -1,7 +1,7 @@
 body {
   height: 100vh;
   background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url("https://images.unsplash.com/photo-1559521783-1d1599583485?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80");
+    url("https://res.cloudinary.com/maxlous/image/upload/v1614266661/khamkeo-vilaysing-y7-cY2ZTwHc-unsplash_bvle16.jpg");
   background-size: cover;
   background-position: center;
   text-shadow: 0 0.05rem 0.1rem rgba(0, 0, 0, 0.5);
@@ -29,11 +29,25 @@ body {
   border-bottom-color: white;
 }
 
-.btn-secondary,
+.btn-secondary {
+  font-family: "Lucida Bright", Georgia, serif;
+  font-style: normal;
+  font-variant: small-caps;
+  font-weight: 700;
+  line-height: 26.4px;
+  color: #283618;
+}
 .btn-secondary:hover {
   color: #333;
   text-shadow: none;
 }
 .lead {
   padding: 1rem;
+}
+h1 {
+  font-family: "Lucida Bright", Georgia, serif;
+  font-style: normal;
+  font-variant: small-caps;
+  font-weight: 700;
+  line-height: 26.4px;
 }

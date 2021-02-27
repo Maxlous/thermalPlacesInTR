@@ -1,15 +1,15 @@
 <% layout("layouts/boilerplate") %>
-  <div class="row">
-    <h1 class="text-center">New Thermal</h1>
+  <article class="row">
+    <h1 class="text-center primaryColor">New Thermal</h1>
     <div class="col-md-6 offset-md-3">
       <form action="/thermals" method="POST" novalidate class="validated-form" enctype="multipart/form-data">
         <div class="mb-3">
-          <label class="form-label" for="title">Title</label>
+          <label class="form-label new_edit primaryColor" for="title">Title</label>
           <input class="form-control" type="text" id="title" name="thermal[title]" required />
           <div class="valid-feedback">Looks Good!</div>
         </div>
         <div class="mb-3">
-          <label class="form-label" for="location">location</label>
+          <label class="form-label new_edit primaryColor" for="location">Location</label>
           <input class="form-control" type="text" id="location" name="thermal[location]" required />
           <div class="valid-feedback">Looks Good!</div>
         </div>
@@ -20,7 +20,7 @@
           <div class="valid-feedback">Looks Good!</div>
         </div> -->
         <div class="mb-3">
-          <label class="form-label" for="price">Thermal Price</label>
+          <label class="form-label new_edit primaryColor" for="price">Thermal Price</label>
           <div class="input-group">
             <span class="input-group-text" id="price-label">$</span>
             <input type="text" class="form-control" placeholder="0.00" aria-label="price" aria-describedby="price-label"
@@ -29,17 +29,19 @@
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="description">Description</label>
+          <label class="form-label new_edit primaryColor" for="description">Description</label>
           <textarea class="form-control" type="text" id="description" name="thermal[description]" required></textarea>
         </div>
         <div class="mb-3 custom-file">
-          <label for="image" class="form-label custom-file-label">Choose Images</label>
+          <label for="image" class="form-label custom-file-label new_edit primaryColor">Choose Images</label>
           <input class="form-control" type="file" id="image" multiple name="image">
         </div>
-        <div class="mb-3">
-          <button class="btn btn-success">Add Thermal</button>
+        <div class="mb-3 d-grid gap-2">
+          <button class="btn btnHov">Add Thermal</button>
         </div>
       </form>
-      <a href="/thermals">All Thermals</a>
+      <div class="d-grid gap-2">
+        <a href="/thermals" class="btn btn-warning fontButton" type="button">Cancel</a>
+      </div>
     </div>
-  </div>
+  </article>

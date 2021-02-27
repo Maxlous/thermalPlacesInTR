@@ -1,12 +1,12 @@
 <% layout("layouts/boilerplate") %>
   <link rel="stylesheet" href="/stylesheets/stars.css">
-  <div class="row">
-    <div class="col-6">
-      <div id="thFotosFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
+  <article class="row">
+    <section class="col-lg-6">
+      <section id="thFotosFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
         <div class="carousel-inner">
           <% thermal.images.forEach((img, i)=> { %>
             <div class="carousel-item <%= i === 0 ? 'active' : ''%>">
-              <img src="<%=img.url%>" class="d-block w-100" alt="">
+              <img style="height: 40vh;" src="<%=img.url%>" class="d-block w-100" alt="">
             </div>
             <% }) %>
         </div>
@@ -20,14 +20,14 @@
             <span class="visually-hidden"></span>
           </button>
           <% } %>
-      </div>
-      
-      <div class="card mb-3">
+      </section>
+
+      <section class="card mb-3 cardBod">
         <div class="card-body">
-          <h5 class="card-title">
+          <h5 class="card-title primaryColor">
             <%= thermal.title %>
           </h5>
-          <p class="card-text">
+          <p class="card-text primaryColor">
             <%=thermal.description %>
           </p>
         </div>
@@ -35,28 +35,28 @@
           <li class="list-group-item text-muted">
             <%=thermal.location %>
           </li>
-          <li class="list-group-item">
+          <li class="list-group-item primaryColor">
             Submitted by <%=thermal.author.username %>
           </li>
-          <li class="list-group-item">$<%=thermal.price %>/night</li>
+          <li class="list-group-item primaryColor">$<%=thermal.price %>/night</li>
         </ul>
         <% if (currentUser && thermal.author.equals(currentUser._id)) {%>
           <div class="card-body">
-            <a class="card-link btn btn-info" href="/thermals/<%=thermal._id%>/edit">Edit</a>
+            <a class="card-link btn btnHov" href="/thermals/<%=thermal._id%>/edit">Edit</a>
             <form class="d-inline" action="/thermals/<%=thermal._id%>?_method=DELETE" method="POST">
-              <button class="btn btn-danger">Delete</button>
+              <button class="btn btn-danger fontButton">Delete</button>
             </form>
           </div>
           <% } %>
             <div class="card-footer text-muted">2 Days Ago</div>
-      </div>
-    </div>
-    <div class="col-6">
+      </section>
+    </section>
+    <div class="col-lg-6">
 
-      <div id='map'></div>
-      
+      <section id='map'></section>
+
       <% if(currentUser){ %>
-        <h2>Leave a Comment</h2>
+        <h2 class="primaryColor mt-2">Leave a Comment</h2>
         <form action="/thermals/<%=thermal._id%>/reviews" novalidate method="POST" class="mb-3 validated-form">
           <!-- <div class="mb-3">
             <label class="form-label" for="rating">Rating</label>
@@ -79,17 +79,17 @@
             </fieldset>
           </div>
           <div class="mb-3">
-            <label class="form-label" for="body">Review</label>
+            <label class="form-label primaryColor" for="body">Review</label>
             <textarea class="form-control" name="review[body]" required id="body" cols="30" rows="3"></textarea>
             <div class="valid-feedback">Looks Good!!</div>
           </div>
-          <button class="btn btn-success">Submit</button>
+          <button class="btn btnHov">Submit</button>
         </form>
         <% } %>
           <% for (let review of thermal.reviews) { %>
-            <div class="card mb-3">
+            <section class="card mb-3">
               <div class="card-body">
-                <h5 class="card-title">
+                <h5 class="card-title primaryColor">
                   <%=review.author.username %>
                 </h5>
                 <p class="starability-result" data-rating="<%=review.rating%>">
@@ -102,14 +102,14 @@
                 </p>
                 <% if (currentUser && review.author.equals(currentUser._id)) {%>
                   <form action="/thermals/<%=thermal._id%>/reviews/<%=review._id%>?_method=DELETE" method="POST">
-                    <button class="btn btn-danger btn-sm">Delete</button>
+                    <button class="btn btn-danger btn-sm fontButton">Delete</button>
                   </form>
                   <% } %>
               </div>
-            </div>
+            </section>
             <% } %>
     </div>
-  </div>
+  </article>
 
   <script>
     const mapToken = '<%-process.env.MAPBOX_TOKEN%>';
