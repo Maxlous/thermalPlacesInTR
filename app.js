@@ -153,8 +153,10 @@ app.use((err, req, res, next) => {
     const {statusCode = 500} = err;
     if(!err.message) err.message = "Oh no something went wrong"
     res.status(statusCode).render("error", { err });
-} )
-//localhost 3000'de
-app.listen(3000, () => {
-    console.log("Serving in port 3000")
+});
+
+const port = process.env.PORT || 3000;
+
+app.listen(port, () => {
+    console.log(`Serving in port ${port}`)
 });
