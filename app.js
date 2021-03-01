@@ -97,8 +97,7 @@ const styleSrcUrls = [
 ];
 const connectSrcUrls = [
     "https://api.mapbox.com/",
-    "https://a.tiles.mapbox.com/",
-    "https://b.tiles.mapbox.com/",
+    "https://*.tiles.mapbox.com/",
     "https://events.mapbox.com/",
 ];
 //code for dealing with the contentSecurityPolicy
