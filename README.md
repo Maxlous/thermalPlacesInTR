@@ -1,4 +1,5 @@
-# thermalPlacesInTr
+# Thermal Springs in Turkey
+[click here to go to the website!](https://thermalspringsturkey.herokuapp.com/)
 
 ---
 
